@@ -1,0 +1,139 @@
+{
+    "batch_meta": {
+        "export_time": "2026-06-03 16:33:39",
+        "nx_version": "NX",
+        "part_name": "DIE-02-M260040-P2",
+        "total_operations": 9,
+        "batch_timestamp": "20260603_163339",
+        "success_operations": 9,
+        "fail_operations": 0
+    },
+    "operations": [
+        {
+            "operation_name": "A_ZXZ",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 0.433074
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_W2_A6",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 2.52939
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_L_A8",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 3.00754
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_C_A8.1",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 1.50801
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_M_A13.5",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 3.28194
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_X_M_D10",
+            "operation_type": "CylinderMilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 3.63031
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "开粗_110_行腔_SIMPLE_D6",
+            "operation_type": "CavityMilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 597.042
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "开粗_110_行腔_SIMPLE_D4",
+            "operation_type": "CavityMilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 97.5341
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "开粗_110_行腔_SIMPLE_D10",
+            "operation_type": "CavityMilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 219.323
+                }
+            ],
+            "status": "success"
+        }
+    ]
+}

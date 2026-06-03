@@ -1,0 +1,127 @@
+===== Processing: B2-01-M260040-P2 =====
+[1/3] Generating toolpaths...
+>>> [TP-1] 进入 GenerateToolpaths
+    [TP-3] CAMSetup 获取成功
+    [TP-4] 获取??OperationCollection，遍??..
+    [TP-5] 找到 5 个工序\n    [TP-7] 调用批量 GenerateToolPath...
+    [TP-8] 批量生成成功
+<<< [TP-11] 退??GenerateToolpaths
+  [STEP1] 0.04s
+[2/3] Gouge check + Save PRT (in-place)...
+>>> [GC-1] 进入 DoGougeCheck
+    [GC-3] 待检查工序数: 5
+    [GC-4] 启动 EnterSpammer 后台按键线程
+    [GC-5.1] 工序: A_ZXZ
+        [GC-7] GougeCheck 完成
+    [GC-5.2] 工序: A_M1_A18
+        [GC-7] GougeCheck 完成
+    [GC-5.3] 工序: B_ZXZ
+        [GC-7] GougeCheck 完成
+    [GC-5.4] 工序: B_M_A14
+        [GC-7] GougeCheck 完成
+    [GC-5.5] 工序: B_M1_25U
+        [GC-7] GougeCheck 完成
+    [GC-8] 停止 EnterSpammer
+    [GC-9] Save 当前部件...
+    [GC-10] Save 成功
+<<< [GC-11] 过切检查完成。成?? 5 个\n  [STEP2] 1.32s
+[3/3] Exporting JSON...
+>>> [JS-1] 进入 ExportJSON
+    [JS-3] 工序?? 5
+    [JS-4] 写入 JSON 文件...
+<<< [JS-5] 退??ExportJSON 成功
+  [STEP3] 0.00s
+===== Done. Total: 1.36s =====
+===== Processing: DIE-02-M260040-P2 =====
+[1/3] Generating toolpaths...
+>>> [TP-1] 进入 GenerateToolpaths
+    [TP-3] CAMSetup 获取成功
+    [TP-4] 获取??OperationCollection，遍??..
+    [TP-5] 找到 9 个工序\n    [TP-7] 调用批量 GenerateToolPath...
+    [TP-8] 批量生成成功
+<<< [TP-11] 退??GenerateToolpaths
+  [STEP1] 398.32s
+[2/3] Gouge check + Save PRT (in-place)...
+>>> [GC-1] 进入 DoGougeCheck
+    [GC-3] 待检查工序数: 9
+    [GC-4] 启动 EnterSpammer 后台按键线程
+    [GC-5.1] 工序: A_ZXZ
+        [GC-7] GougeCheck 完成
+    [GC-5.2] 工序: A_W2_A6
+        [GC-7] GougeCheck 完成
+    [GC-5.3] 工序: A_L_A8
+        [GC-7] GougeCheck 完成
+    [GC-5.4] 工序: A_C_A8.1
+        [GC-7] GougeCheck 完成
+    [GC-5.5] 工序: A_M_A13.5
+        [GC-7] GougeCheck 完成
+    [GC-5.6] 工序: A_X_M_D10
+        [GC-7] GougeCheck 完成
+    [GC-5.7] 工序: ????_110_???_SIMPLE_D6
+        [GC-7] GougeCheck 完成
+    [GC-5.8] 工序: ????_110_???_SIMPLE_D4
+        [GC-7] GougeCheck 完成
+    [GC-5.9] 工序: ????_110_???_SIMPLE_D10
+        [GC-7] GougeCheck 完成
+    [GC-8] 停止 EnterSpammer
+    [GC-9] Save 当前部件...
+    [GC-10] Save 成功
+<<< [GC-11] 过切检查完成。成?? 9 个\n  [STEP2] 2.48s
+[3/3] Exporting JSON...
+>>> [JS-1] 进入 ExportJSON
+    [JS-3] 工序?? 9
+    [JS-4] 写入 JSON 文件...
+<<< [JS-5] 退??ExportJSON 成功
+  [STEP3] 0.00s
+===== Done. Total: 400.80s =====
+===== Processing: DIE-05-M260040-P2 =====
+[1/3] Generating toolpaths...
+>>> [TP-1] 进入 GenerateToolpaths
+    [TP-3] CAMSetup 获取成功
+    [TP-4] 获取??OperationCollection，遍??..
+    [TP-5] 找到 7 个工序\n    [TP-7] 调用批量 GenerateToolPath...
+    [TP-8] 批量生成成功
+<<< [TP-11] 退??GenerateToolpaths
+  [STEP1] 5.27s
+[2/3] Gouge check + Save PRT (in-place)...
+>>> [GC-1] 进入 DoGougeCheck
+    [GC-3] 待检查工序数: 7
+    [GC-4] 启动 EnterSpammer 后台按键线程
+    [GC-5.1] 工序: A_ZXZ
+        [GC-7] GougeCheck 完成
+    [GC-5.2] 工序: A_L_A6
+        [GC-7] GougeCheck 完成
+    [GC-5.3] 工序: A_M_A10.5
+        [GC-7] GougeCheck 完成
+    [GC-5.4] 工序: A_X_M_D10
+        [GC-7] GougeCheck 完成
+    [GC-5.5] 工序: ????_110_???????_SIMPLE_17R0.8
+        [GC-7] GougeCheck 完成
+    [GC-5.6] 工序: ????_160_???_SIMPLE_32R0.8
+        [GC-7] GougeCheck 完成
+    [GC-5.7] 工序: ????_160_D4-????_SIMPLE_50R5
+        [GC-7] GougeCheck 完成
+    [GC-8] 停止 EnterSpammer
+    [GC-9] Save 当前部件...
+    [GC-10] Save 成功
+<<< [GC-11] 过切检查完成。成?? 7 个\n  [STEP2] 13.80s
+[3/3] Exporting JSON...
+>>> [JS-1] 进入 ExportJSON
+    [JS-3] 工序?? 7
+    [JS-4] 写入 JSON 文件...
+<<< [JS-5] 退??ExportJSON 成功
+  [STEP3] 0.00s
+===== Done. Total: 19.06s =====
+===== Processing: DIE-09-M260040-P2 =====
+[1/3] Generating toolpaths...
+>>> [TP-1] 进入 GenerateToolpaths
+    [TP-3] CAMSetup 获取成功
+    [TP-4] 获取??OperationCollection，遍??..
+    [TP-5] 找到 19 个工序\n    [TP-7] 调用批量 GenerateToolPath...
+    [TP-8] 批量生成成功
+<<< [TP-11] 退??GenerateToolpaths
+  [STEP1] 412.81s
+[2/3] Gouge check + Save PRT (in-place)...
+>>> [GC-1] 进入 DoGougeCheck
+    [GC-3] 待检查工序数: 19
+    [GC-4] 启动 EnterSpamme

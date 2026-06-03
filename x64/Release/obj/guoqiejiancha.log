@@ -1,0 +1,17 @@
+﻿  guoqiejiancha.cpp
+C:\Users\Arno\Desktop\祝冕卜\过切检查\guoqiejiancha.cpp(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+C:\Program Files\Siemens\NX2312\UGOPEN\NXOpen\NXException.hxx(28,53): warning C4275: 非 dll 接口 class“std::exception”用作 dll 接口 class“NXOpen::NXException”的基
+  (编译源文件“guoqiejiancha.cpp”)
+      C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\include\vcruntime_exception.h(49,35):
+      参见“std::exception”的声明
+      C:\Program Files\Siemens\NX2312\UGOPEN\NXOpen\NXException.hxx(28,27):
+      参见“NXOpen::NXException”的声明
+  
+C:\Users\Arno\Desktop\祝冕卜\过切检查\guoqiejiancha.cpp(272,17): warning C4996: 'NXOpen::CAM::CAMSetup::GougeCheck': Deprecated in NX9.0.0.  Use new version with additional arguments instead.
+    正在创建库 C:\Users\Arno\Desktop\祝冕卜\过切检查\x64\Release\guoqiejiancha.lib 和对象 C:\Users\Arno\Desktop\祝冕卜\过切检查\x64\Release\guoqiejiancha.exp
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+  All 509 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  guoqiejiancha.vcxproj -> C:\Users\Arno\Desktop\祝冕卜\过切检查\x64\Release\guoqiejiancha.dll
+  已复制         1 个文件。

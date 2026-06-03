@@ -1,0 +1,83 @@
+{
+    "batch_meta": {
+        "export_time": "2026-06-03 16:27:47",
+        "nx_version": "NX",
+        "part_name": "U2-04-M260040-P2",
+        "total_operations": 5,
+        "batch_timestamp": "20260603_162747",
+        "success_operations": 5,
+        "fail_operations": 0
+    },
+    "operations": [
+        {
+            "operation_name": "A_ZXZ",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 0.424721
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_M_A14",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 2.14924
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_M1_A18",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 3.74208
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_C_32U",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 1.49141
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_X_M1_D14",
+            "operation_type": "CylinderMilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 4.61277
+                }
+            ],
+            "status": "success"
+        }
+    ]
+}
