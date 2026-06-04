@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import logging
 import os
+import shutil
 import sys
 import traceback
 from pathlib import Path
@@ -86,7 +87,13 @@ def main(input_dir: str, output_dir: str) -> int:
     worker_script = os.path.join(SCRIPT_DIR, "guoqie_execution.py")
     log_dir       = os.path.join(out_dir, "logs")
 
-    # DLL 路径：先找 post-build 复制到 scripts/ 的版本，再取 DLL_PATH 配置
+    # 清理上次输出
+    for sub in ("prt", "json", "logs"):
+        p = os.path.join(out_dir, sub)
+        if os.path.exists(p):
+            shutil.rmtree(p)
+            print(f"  已清空: {sub}/")
+
     dll_path = os.path.join(SCRIPT_DIR, "guoqiejiancha.dll")
     if not os.path.exists(dll_path):
         dll_path = _resolve(DLL_PATH)

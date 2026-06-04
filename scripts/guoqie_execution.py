@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import ctypes
 import os
+import subprocess
 import sys
 import time
 from typing import Callable, List, Tuple
@@ -34,14 +35,12 @@ from guoqie_decision import (
     validate_environment,
 )
 from guoqie_io import (
-    collect_worker_summaries,
     copy_to_target,
     count_json_files,
     ensure_dir,
     json_path_for,
     list_prt_files,
     move_file,
-    open_worker_log,
     prt_log_path,
     spawn_nx_worker,
     target_prt_path,
@@ -231,7 +230,6 @@ def start_workers(
 ) -> List[Tuple]:
     workers = []
     for i in range(n):
-        log_f, log_path = open_worker_log(log_dir, i)
         env = {
             "GUOQIE_INPUT":      input_dir,
             "GUOQIE_OUTPUT":     output_dir,
@@ -239,9 +237,9 @@ def start_workers(
             "GUOQIE_WID":        str(i),
             "GUOQIE_TOTAL":      str(n),
         }
-        print(f"  启动 Worker {i} -> 日志: {os.path.basename(log_path)}")
-        p = spawn_nx_worker(nx_run_journal, worker_script, log_f, cwd, env)
-        workers.append((i, p, log_f, log_path))
+        print(f"  启动 Worker {i}")
+        p = spawn_nx_worker(nx_run_journal, worker_script, subprocess.DEVNULL, cwd, env)
+        workers.append((i, p))
         if i < n - 1:
             time.sleep(STAGGER_SECONDS)
     return workers
@@ -257,13 +255,12 @@ def monitor_workers(
     last_print = 0.0
 
     while not all(finished):
-        for idx, (wid, p, log_f, _) in enumerate(workers):
+        for idx, (wid, p) in enumerate(workers):
             if finished[idx]:
                 continue
             rc = p.poll()
             if rc is not None:
                 finished[idx] = True
-                log_f.close()
                 el = time.time() - t_start
                 print(f"\n[+{el:.0f}s] Worker {wid} 完成 (rc={rc})")
 
@@ -318,10 +315,7 @@ def main_dispatcher(
         input_dir, output_dir, dll_path,
     )
 
-    print(f"\n全部启动完毕。")
-    print(f"实时查看 worker 日志:")
-    print(f"  PowerShell> Get-Content '{log_dir}\\worker_0.log' -Wait -Tail 20")
-    print()
+    print(f"\n全部启动完毕。\n")
 
     total_time = monitor_workers(workers, json_dir, len(prts))
 
@@ -331,10 +325,7 @@ def main_dispatcher(
     print(f"输出: {output_dir}")
     print(f"  PRT: {prt_dir}")
     print(f"  JSON: {json_dir}")
-    print(f"  日志: {log_dir}")
-    print("\n各进程结尾摘要:")
-    for line in collect_worker_summaries(workers):
-        print(line)
+    print(f"  日志: {log_dir}\n")
 
     return 0
 

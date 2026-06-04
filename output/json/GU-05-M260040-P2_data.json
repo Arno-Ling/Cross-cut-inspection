@@ -1,0 +1,125 @@
+{
+    "batch_meta": {
+        "export_time": "2026-06-04 11:11:11",
+        "nx_version": "NX",
+        "part_name": "GU-05-M260040-P2",
+        "total_operations": 8,
+        "batch_timestamp": "20260604_111111",
+        "success_operations": 8,
+        "fail_operations": 0
+    },
+    "operations": [
+        {
+            "operation_name": "A_ZXZ",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 0.17591
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_L_A6",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 2.50688
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_M_A9",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 2.22909
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "A_M_A14.5",
+            "operation_type": "HoleDrilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 1.0254
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "开粗_110_行腔_SIMPLE_32R0.8",
+            "operation_type": "CavityMilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 146.932
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "开粗_110_行腔_SIMPLE_D10",
+            "operation_type": "CavityMilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 84.0575
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "开粗_160_行腔_SIMPLE_D10",
+            "operation_type": "CavityMilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 0
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "operation_name": "开粗_160_行腔_SIMPLE_D6",
+            "operation_type": "CavityMilling",
+            "total_params": 1,
+            "parameters": [
+                {
+                    "id": 124,
+                    "display_name": "Toolpath Time",
+                    "type": "Double",
+                    "value": 0
+                }
+            ],
+            "status": "success"
+        }
+    ]
+}
