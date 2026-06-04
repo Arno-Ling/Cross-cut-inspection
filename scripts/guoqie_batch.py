@@ -6,11 +6,11 @@ guoqie_batch.py - 过切检查并行批处理 入口
 输出结构（output_dir 下）：
   output_dir/prt/   生成刀路后的 PRT 文件
   output_dir/json/  工序参数 JSON
-  output_dir/logs/  worker 日志
+  output_dir/logs/  按 PRT 命名的日志文件
 
 命令行用法：
   python guoqie_batch.py <input_dir> <output_dir>
-  python guoqie_batch.py                   （从 guoqie_paths.cfg 读取）
+  python guoqie_batch.py                   （使用下方硬编码默认路径）
 
 编程调用：
   from guoqie_batch import main
@@ -24,7 +24,6 @@ import os
 import sys
 import traceback
 from pathlib import Path
-from typing import Dict
 
 from guoqie_execution import main_dispatcher
 
@@ -34,11 +33,11 @@ from guoqie_execution import main_dispatcher
 # =============================================================================
 # 相对路径基于项目根目录（过切检查/）解析
 
-INPUT_DIR = r"input"                        # 输入 PRT 目录
-OUTPUT_DIR = r"output"                       # 输出根目录
-DLL_PATH = r"x64\Release\guoqiejiancha.dll"      # Release|x64 DLL
+INPUT_DIR = r"input"                                # 输入 PRT 目录
+OUTPUT_DIR = r"output"                               # 输出根目录
+DLL_PATH = r"x64\Release\guoqiejiancha.dll"           # Release|x64 DLL（VS 编译输出）
 NX_RUN_JOURNAL = r"C:\Program Files\Siemens\NX2312\NXBIN\run_journal.exe"
-DEFAULT_WORKERS = 4
+DEFAULT_WORKERS = 3
 # =============================================================================
 
 
@@ -52,43 +51,6 @@ def _resolve(path: str) -> str:
     if os.path.isabs(path):
         return os.path.normpath(path)
     return os.path.normpath(os.path.join(PROJECT_ROOT, path))
-
-
-# -----------------------------------------------------------------------------
-# 配置文件读取（guoqie_paths.cfg），覆盖上方硬编码默认值
-# -----------------------------------------------------------------------------
-CFG_FILENAME = "guoqie_paths.cfg"
-
-
-def load_cfg() -> Dict[str, str]:
-    cfg_path = os.path.join(SCRIPT_DIR, CFG_FILENAME)
-    result: Dict[str, str] = {}
-    if not os.path.isfile(cfg_path):
-        return result
-    with open(cfg_path, "r", encoding="utf-8-sig") as f:
-        for raw in f:
-            line = raw.strip()
-            if not line or line.startswith("#"):
-                continue
-            if "=" not in line:
-                continue
-            key, _, val = line.partition("=")
-            key = key.strip()
-            val = val.strip()
-            if len(val) >= 2 and val[0] == val[-1] and val[0] in ('"', "'"):
-                val = val[1:-1]
-            if key:
-                result[key] = val
-    return result
-
-
-def apply_cfg(cfg: Dict[str, str]) -> tuple:
-    inp = cfg.get("INPUT_DIR") or INPUT_DIR
-    out = cfg.get("OUTPUT_DIR") or OUTPUT_DIR
-    dll = cfg.get("DLL_PATH") or DLL_PATH
-    nx  = cfg.get("NX_RUN_JOURNAL") or NX_RUN_JOURNAL
-    n   = int(cfg.get("DEFAULT_WORKERS") or str(DEFAULT_WORKERS))
-    return _resolve(inp), _resolve(out), _resolve(dll), nx, n
 
 
 # -----------------------------------------------------------------------------
@@ -124,7 +86,7 @@ def main(input_dir: str, output_dir: str) -> int:
     worker_script = os.path.join(SCRIPT_DIR, "guoqie_execution.py")
     log_dir       = os.path.join(out_dir, "logs")
 
-    # DLL 路径：先相对 scripts/ 找，再相对项目根找
+    # DLL 路径：先找 post-build 复制到 scripts/ 的版本，再取 DLL_PATH 配置
     dll_path = os.path.join(SCRIPT_DIR, "guoqiejiancha.dll")
     if not os.path.exists(dll_path):
         dll_path = _resolve(DLL_PATH)
@@ -170,25 +132,21 @@ def main(input_dir: str, output_dir: str) -> int:
 def _print_usage_and_exit() -> None:
     print("用法:")
     print("  python guoqie_batch.py <input_dir> <output_dir>")
-    print("  python guoqie_batch.py          （从 guoqie_paths.cfg 读取目录）")
+    print("  python guoqie_batch.py          （使用 batch.py 顶部硬编码默认路径）")
     print()
     print("首次使用前：")
     print("  1. 打开 guoqiejiancha.sln → Release | x64 → 生成解决方案")
     print("  2. DLL 自动复制到 scripts\\guoqiejiancha.dll")
     print()
-    print("路径配置：编辑 scripts\\guoqie_paths.cfg 或直接修改 guoqie_batch.py 顶部")
+    print("路径配置：直接修改 guoqie_batch.py 顶部 INPUT_DIR / OUTPUT_DIR / DLL_PATH 等")
     sys.exit(1)
 
 
 if __name__ == "__main__":
-    cfg = load_cfg()
-
     if len(sys.argv) == 3:
         inp, out = sys.argv[1], sys.argv[2]
     elif len(sys.argv) == 1:
-        inp, out, *_ = apply_cfg(cfg)
-        if not inp or not out:
-            _print_usage_and_exit()
+        inp, out = _resolve(INPUT_DIR), _resolve(OUTPUT_DIR)
     else:
         _print_usage_and_exit()
 

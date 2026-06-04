@@ -23,7 +23,7 @@ param_order:
 
 - 入口脚本：`scripts/guoqie_batch.py`
 - 对外参数：**只有 input_dir 和 output_dir 两个**
-- 其它配置（进程数 / NX 路径 / DLL 路径 / 日志目录）通过 `scripts/guoqie_paths.cfg` 或直接编辑 `guoqie_batch.py` 顶部修改
+- 其它配置（进程数 / NX 路径 / DLL 路径）直接编辑 `guoqie_batch.py` 顶部修改
 
 依赖环境：
 - 安装 NX2312（默认路径 `C:\Program Files\Siemens\NX2312`）
@@ -32,7 +32,7 @@ param_order:
 
 运行模式：
 - **命令行**：`python guoqie_batch.py <input> <output>`
-- **无参**：从 `guoqie_paths.cfg` 读取目录
+- **无参**：使用 `guoqie_batch.py` 顶部硬编码默认路径
 - **编程调用**：`from guoqie_batch import main; main(input_dir=..., output_dir=...)`
 
 ## Project Structure
@@ -54,8 +54,7 @@ param_order:
     ├── guoqie_batch.py                # 入口：CLI + 编程调用
     ├── guoqie_decision.py             # 常量、文件分包、环境校验
     ├── guoqie_execution.py            # Worker（NX 进程内）+ 主控调度
-    ├── guoqie_io.py                   # 文件系统、子进程、日志
-    └── guoqie_paths.cfg               # 路径配置（可编辑）
+    └── guoqie_io.py                   # 文件系统、子进程、日志
 ```
 
 DLL 编译后在 VS Post-Build 中自动复制到 `scripts/guoqiejiancha.dll`，Python 直接使用此路径。
@@ -68,14 +67,14 @@ DLL 编译后在 VS Post-Build 中自动复制到 `scripts/guoqiejiancha.dll`，
 - DLL 自动复制到 `scripts/guoqiejiancha.dll`
 - 确认 `input/` 目录下有至少一个 `.prt` 文件
 
-### 2) 命令行（从 cfg 读取目录）
+### 2) 命令行（使用默认路径）
 
 ```bash
 cd "过切检查/scripts"
 python guoqie_batch.py
 ```
 
-默认读取 `guoqie_paths.cfg` 中的 `INPUT_DIR` 和 `OUTPUT_DIR`。
+使用 `guoqie_batch.py` 顶部 `INPUT_DIR` / `OUTPUT_DIR` 的硬编码默认值。
 
 ### 3) 命令行（手动指定目录）
 
@@ -107,9 +106,9 @@ main(
 | `INPUT_DIR` | 是* | 含 `.prt` 文件的输入目录 |
 | `OUTPUT_DIR` | 是* | 输出根目录（自动创建 `prt/` `json/` `logs/`）|
 
-\* 未传参时从 `guoqie_paths.cfg` 读取；cfg 也没有时使用 `guoqie_batch.py` 顶部的硬编码默认值。
+\* 未传参时使用 `guoqie_batch.py` 顶部的硬编码默认值。
 
-其它配置（`guoqie_batch.py` 顶部或 `guoqie_paths.cfg`）：
+其它配置（`guoqie_batch.py` 顶部）：
 
 | 配置项 | 默认值 | 说明 |
 | --- | --- | --- |
@@ -128,8 +127,10 @@ main(
 │   ├── {零件名1}_data.json      # 工序参数 JSON（toolpath time 等）
 │   └── {零件名2}_data.json
 └── logs/
-    ├── worker_0_*.log           # worker 0 的运行日志
-    └── worker_1_*.log
+    ├── {零件名1}.log            # per-PRT 处理日志
+    ├── {零件名2}.log
+    ├── worker_0.log             # worker 原始输出
+    └── worker_1.log
 ```
 
 ## Return Values
@@ -146,7 +147,7 @@ main(
 
 ```
 1. 把 .prt 文件放到 input/ 目录
-2. 编辑 scripts/guoqie_paths.cfg，确认 DEFAULT_WORKERS（先小并行度试一次）
+2. 编辑 `guoqie_batch.py` 顶部 `DEFAULT_WORKERS`（先小并行度试一次）
 3. cd scripts && python guoqie_batch.py
 4. 观察 output/logs/ 下的日志，确认 license/内存够
 5. 加大 DEFAULT_WORKERS（4 或 6），跑全量
@@ -155,7 +156,7 @@ main(
 实时监控某个 worker 进度：
 
 ```powershell
-Get-Content output\logs\worker_0_*.log -Wait -Tail 20
+Get-Content output\logs\worker_0.log -Wait -Tail 20
 ```
 
 ## Preconditions
@@ -172,7 +173,7 @@ Get-Content output\logs\worker_0_*.log -Wait -Tail 20
 | 现象 | 可能原因 | 解决 |
 | --- | --- | --- |
 | `ModuleNotFoundError: NXOpen`（worker 日志）| 没在 NX Python 环境运行 | 通过 `run_journal.exe` 启动，不要直接 `python guoqie_execution.py` |
-| `run_journal.exe 找不到` | NX 路径不对 | 修改 `guoqie_paths.cfg` 或 `guoqie_batch.py` 中的 `NX_RUN_JOURNAL` |
+| `run_journal.exe 找不到` | NX 路径不对 | 修改 `guoqie_batch.py` 顶部的 `NX_RUN_JOURNAL` |
 | worker 日志全 0 字节，但 NX 进程存在 | NX 启动慢 / license 排队 | 等 30-90 秒；或减小 `DEFAULT_WORKERS` |
 | 部分 worker 立即 rc=1 退出 | license 不足 | 减小 `DEFAULT_WORKERS`；或检查 license server |
 | 内存不够 NX 崩溃 | 进程数 &times; 2GB &gt; 物理内存 | 降低 `DEFAULT_WORKERS` |
@@ -184,7 +185,8 @@ Get-Content output\logs\worker_0_*.log -Wait -Tail 20
 - 入口：`setup_logger("guoqie_batch")`
 - 默认输出到 **stderr**（StreamHandler）
 - 环境变量 `SKILL_LOG_FILE`：设置后额外落盘到该路径
-- 各 worker 详细日志：`output/logs/worker_{N}_{HHMMSS}.log`
+- 各 worker 原始输出：`output/logs/worker_{N}.log`
+- 各 PRT 处理日志：`output/logs/{零件名}.log`
 - DLL 内部日志：通过 `OutputDebugStringA` 输出到 Visual Studio Output 窗口（调试用）
 
 ## Related / Downstream
@@ -193,6 +195,6 @@ Get-Content output\logs\worker_0_*.log -Wait -Tail 20
 | --- | --- |
 | `guoqiejiancha.cpp` | 本 Skill 调用的 DLL 源码 |
 | `guoqiejiancha.sln` / `guoqiejiancha.vcxproj` | VS 项目，重新编译 DLL 用 |
-| `guoqie_paths.cfg` | 运行时路径配置 |
+| `guoqie_batch.py` 顶部变量 | 运行时路径配置 |
 
 本 Skill 只负责 **批量并行的过切检查处理**；单文件调试请直接在 NX 中通过 **文件 → 执行 → NX Open** 加载 `scripts/guoqiejiancha.dll`。

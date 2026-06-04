@@ -55,10 +55,14 @@ def json_path_for(prt_path: str) -> str:
 
 def open_worker_log(log_dir: str, worker_id: int):
     ensure_dir(log_dir)
-    timestamp = datetime.now().strftime("%H%M%S")
-    log_path = os.path.join(log_dir, f"worker_{worker_id}_{timestamp}.log")
+    log_path = os.path.join(log_dir, f"worker_{worker_id}.log")
     log_f = open(log_path, 'w', encoding='utf-8')
     return log_f, log_path
+
+
+def prt_log_path(log_dir: str, prt_full_path: str) -> str:
+    base = os.path.splitext(os.path.basename(prt_full_path))[0]
+    return os.path.join(log_dir, f"{base}.log")
 
 
 def grep_log(log_path: str, keyword: str) -> List[str]:

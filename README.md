@@ -16,14 +16,14 @@
 ├── guoqiejiancha.vcxproj        # VS 项目文件
 ├── input/                       # 输入 PRT 文件
 ├── output/                      # 处理结果输出
+│   ├── prt/                     # 生成刀路后的 PRT
+│   ├── json/                    # 工序参数 JSON
+│   └── logs/                    # 按 PRT 命名的日志
 └── scripts/
     ├── guoqie_batch.py          # 入口：CLI + 编程调用
     ├── guoqie_execution.py      # NX 处理 + 并行调度
     ├── guoqie_decision.py       # 常量 + 文件分包
-    ├── guoqie_io.py             # 文件系统 + 子进程
-    ├── guoqie_config.py         # 配置文件读取
-    ├── guoqie_paths.cfg         # 运行配置
-    └── parallel_logs/           # worker 日志
+    └── guoqie_io.py             # 文件系统 + 子进程
 ```
 
 ---
@@ -35,7 +35,7 @@
 3. 点击 **生成** → **生成解决方案**
 4. 编译成功后 DLL 自动复制到 `scripts\guoqiejiancha.dll`
 
-> NX SDK 路径：若 NX 不在 `C:\Program Files\Siemens\NX2312`，请设置环境变量 `UGII_BASE_DIR` 指向 NX 安装目录，或在 VS 中修改项目属性（UserMacros → NXBaseDir）。
+> NX SDK 路径：若 NX 不在 `C:\Program Files\Siemens\NX2312`，请设置环境变量 `UGII_BASE_DIR` 指向 NX 安装目录。
 
 ---
 
@@ -46,6 +46,8 @@
 cd scripts
 python guoqie_batch.py ..\input ..\output
 ```
+
+不传参数则使用 `guoqie_batch.py` 顶部的硬编码默认路径。
 
 ### 方式二：Python 代码调用
 ```python
@@ -67,25 +69,32 @@ main(input_dir=r"input", output_dir=r"output")
 
 ```text
 output/
-├── {零件名1}/
-│   ├── {零件名1}.prt            # 处理后部件副本
-│   └── {零件名1}_data.json      # 工序参数 JSON
-├── {零件名2}/
-│   └── ...
+├── prt/
+│   ├── part1.prt             # 生成刀路后的 PRT 副本
+│   └── part2.prt
+├── json/
+│   ├── part1_data.json       # 工序参数 JSON
+│   └── part2_data.json
+└── logs/
+    ├── part1.log             # per-PRT 处理日志
+    ├── part2.log
+    ├── worker_0.log          # worker 原始输出
+    └── worker_1.log
 ```
 
 ---
 
 ## 配置
 
-编辑 `scripts/guoqie_paths.cfg`：
+编辑 `guoqie_batch.py` 顶部：
 
 | 配置项 | 默认值 | 说明 |
 |--------|--------|------|
-| `INPUT_DIR` | `..\input` | 输入目录 |
-| `OUTPUT_DIR` | `..\output` | 输出目录 |
-| `DEFAULT_WORKERS` | `3` | 并行 NX 进程数 |
+| `INPUT_DIR` | `input` | 输入目录 |
+| `OUTPUT_DIR` | `output` | 输出根目录 |
+| `DLL_PATH` | `scripts\guoqiejiancha.dll` | Release\|x64 DLL |
 | `NX_RUN_JOURNAL` | `C:\Program Files\Siemens\NX2312\NXBIN\run_journal.exe` | NX 启动器 |
+| `DEFAULT_WORKERS` | `3` | 并行 NX 进程数 |
 
 ---
 

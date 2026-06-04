@@ -42,6 +42,7 @@ from guoqie_io import (
     list_prt_files,
     move_file,
     open_worker_log,
+    prt_log_path,
     spawn_nx_worker,
     target_prt_path,
 )
@@ -101,21 +102,34 @@ def process_one_part(
     part_path: str,
     prt_dir: str,
     json_dir: str,
+    log_dir: str,
     worker_id: int,
 ) -> bool:
     name = os.path.basename(part_path)
+    prt_log = prt_log_path(log_dir, part_path)
     t_start = time.time()
+
+    def prt_log_write(msg: str):
+        t = time.strftime("%H:%M:%S", time.localtime())
+        with open(prt_log, 'a', encoding='utf-8') as f:
+            f.write(f"[{t}] {msg}\n")
+
+    prt_log_write(f"开始处理: {name}")
     print(f"[W{worker_id}] {name}")
 
     target = target_prt_path(part_path, prt_dir)
     try:
         copy_to_target(part_path, target)
+        prt_log_write(f"复制完成: {target}")
     except Exception as e:
+        prt_log_write(f"复制失败: {e}")
         print(f"  [W{worker_id}] [ERROR] copy: {e}")
         return False
 
     if not open_part(session, target, worker_id):
+        prt_log_write("NX 打开失败")
         return False
+    prt_log_write("NX 打开成功")
 
     try:
         try:
@@ -130,9 +144,12 @@ def process_one_part(
             src_json = json_path_for(target)
             if os.path.exists(src_json):
                 move_file(src_json, json_dir)
+                prt_log_write(f"JSON 已移动: {os.path.basename(src_json)}")
+            prt_log_write(f"完成 ({elapsed:.1f}s)")
             print(f"[W{worker_id}]   OK ({elapsed:.1f}s) -> {target}")
             return True
         else:
+            prt_log_write(f"DLL 返回错误码: {rc}")
             print(f"[W{worker_id}]   FAIL rc={rc} ({elapsed:.1f}s)")
             return False
     finally:
@@ -169,6 +186,8 @@ def run_worker() -> None:
         return
 
     ensure_dir(prt_dir)
+    ensure_dir(json_dir)
+    ensure_dir(log_dir)
 
     print(f"[W{worker_id}] DLL: {dll_path}")
     try:
@@ -188,7 +207,7 @@ def run_worker() -> None:
     t0 = time.time()
     for i, prt in enumerate(my_files, 1):
         print(f"\n[W{worker_id}] [{i}/{len(my_files)}]", end=" ")
-        if process_one_part(session, fn, prt, prt_dir, json_dir, worker_id):
+        if process_one_part(session, fn, prt, prt_dir, json_dir, log_dir, worker_id):
             ok += 1
         else:
             fail += 1
@@ -301,7 +320,7 @@ def main_dispatcher(
 
     print(f"\n全部启动完毕。")
     print(f"实时查看 worker 日志:")
-    print(f"  PowerShell> Get-Content '{log_dir}\\worker_0_*.log' -Wait -Tail 20")
+    print(f"  PowerShell> Get-Content '{log_dir}\\worker_0.log' -Wait -Tail 20")
     print()
 
     total_time = monitor_workers(workers, json_dir, len(prts))
